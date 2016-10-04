@@ -1,4 +1,27 @@
 var request = require("request");
+/*
+  post helper function used to post to the user
+  when the task is completed
+*/
+module.exports.postToCallback = function(job){
+  var callback_url = job.callback_url;
+
+  request.post(callback_url, {
+    form: job
+  }, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log(body);
+    } else {
+      console.log(error);
+      console.log(response.statusCode);
+    }
+  });
+}
+
+/* 
+  following lines are helpers to test my server
+*/
+
 var SCALE_API_KEY = '12345';
 
 var payload = {
@@ -29,22 +52,3 @@ module.exports.doPost = function(){
     }
   });
 }
-
-module.exports.postToCallback = function(job){
-  var callback_url = job.callback_url;
-
-  console.log("sending to " + callback_url);
-  console.log(job);
-
-  request.post(callback_url, {
-    form: job
-  }, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log(body);
-    } else {
-      console.log(error);
-      console.log(response.statusCode);
-    }
-  });
-}
-

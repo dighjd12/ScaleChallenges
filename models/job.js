@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+//annotation job schema
 var jobSchema = mongoose.Schema({
 
 	type:{
@@ -47,6 +48,7 @@ var jobSchema = mongoose.Schema({
 
 var Job = module.exports = mongoose.model('job', jobSchema);
 
+//format job object into scale-style response object
 module.exports.formatResponse = function(job){
 	var obj = job.toObject();
 
@@ -68,10 +70,6 @@ module.exports.formatResponse = function(job){
 
 module.exports.getJobs = function(callback, limit){
 	Job.find(callback).limit(limit);
-};
-
-module.exports.insertJobs = function(job, callback){
-	Job.insert(job, callback);
 };
 
 module.exports.addJobs = function(job, callback){

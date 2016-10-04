@@ -3,33 +3,19 @@ annotationApp.controller('AppCtrl', ['$scope', '$http', '$window', '$log', funct
 var log = console.log.bind(this);    
 console.log("Hello World from controller");
 
+/* refreshes the list of available tasks */
 var refresh = function() {
   $http.get('/getJobs').success(function(response) {
     console.log("I got the data I requested");
     $scope.joblist = response;
     $scope.job = "";
+	$scope.annotator = null;
   });
-
-
-  /*var annotator = new BBoxAnnotator({
-	    url: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQAARqKEq0X7eMZ1WaBI9EDPUeelpl2FDdl3XpEXwnPq5HFynVVa9zNLes",
-	    input_method: 'fixed', 
-	    labels: "object",
-	    onchange: function(annotation) {
-	      $("#annotation_data").val(JSON.stringify(annotation));
-	    }
-	  });*/
-
 };
 
 refresh();
-generateAnnotator();
 
-function generateAnnotator () {
-	console.log("here");
-	$scope.annotator = null;
-};
-
+/* initiates the bbox to work on the task */
 $scope.doAnnotation = function(job) {
 	log("Annotator Obj: ", $scope.annotator);
 
@@ -47,6 +33,7 @@ $scope.doAnnotation = function(job) {
 	});
 };
 
+/* completes the task */
 $scope.finishAnnotation = function() {
 	if ($scope.annotator == null){
 		log("annotator null!");

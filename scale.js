@@ -19,6 +19,7 @@ mongoose.connect('mongodb://localhost/scale');
 
 var db = mongoose.connection;
 
+/* gets all jobs from the database */
 app.get('/getJobs', function(req, res){
 	
 	console.log('getting annotations');
@@ -32,6 +33,12 @@ app.get('/annotate', function(req, res){
 	res.sendFile(__dirname + "/public/annotate.html");
 });
 
+/* completes the task by posting to the client and 
+	deletes the job 
+	I think better design might have been to do the
+	callback posting in the annotate_controller 
+	and let this block of code do deletion only. 
+	was short of time :( */
 app.delete('/deleteJobs/:id', function(req, res){
 	var id = req.params.id;
 	console.log(id);
@@ -57,32 +64,8 @@ app.delete('/deleteJobs/:id', function(req, res){
 
 });
 
-/*
-app.get('/doAnnotate/:task_id', function(req, res){
-	
-	console.log("annotating .. ");
-	res.render(__dirname + "/public/doAnnotation.html");
-});
-
-app.get('/getJob/:task_id', function(req, res){
-
-	console.log("getting that job.. ");
-	Job.getJobs(job, function(err, job){
-		if(err){
-			throw err;
-		}
-
-		job_toClient = Job.formatResponse(job);
-		res.json(job_toClient);
-	}, 'where _id={task_id}');
-});*/
-
-app.get('/doPost', function(req, res){
-	postHelper.doPost();
-	res.send("Sent!");
-});
-
 //TODO authentication API KEY
+/* api end for incoming task requests */
 app.post('/v1/task/annotation', function(req, res){
 	
 	console.log("received..");
@@ -99,6 +82,12 @@ app.post('/v1/task/annotation', function(req, res){
 		res.json(job_toClient);
 	});
 
+});
+
+/* sends a request, just for test purpose */
+app.get('/doPost', function(req, res){
+	postHelper.doPost();
+	res.send("Sent!");
 });
 
 app.listen(port);
