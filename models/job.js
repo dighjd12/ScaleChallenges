@@ -78,4 +78,12 @@ module.exports.addJobs = function(job, callback){
 	Job.create(job, callback);
 };
 
+module.exports.getJobById = function(id, callback){
+	Job.find({_id: id}, callback);
+};
+
+module.exports.removeJob = function(id, callback){
+	Job.remove({_id: id}, callback);
+}
+
 
